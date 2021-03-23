@@ -1,10 +1,6 @@
-#include <Wire.h>            // incluye libreria para interfaz I2C https://www.youtube.com/watch?v=5et-N1-pK9A
-#include <Time.h>
-#include <TimeAlarms.h>
-#include "RTClib.h"         // libreria para el reloj
-#include <OneWire.h>
-#include "DallasTemperature.h"
 
+
+#include "vars.h" 
 // RTC_DS1307 rtc;
 RTC_DS3231 rtc;
 
@@ -36,7 +32,6 @@ int umbralTemp2 = 27;
 
 
 // Variables para el uso de la bomba de agua
-int misHoras[] = {10, 12, 14, 16, 18, 20, 22};
 int horaEjecutada = 0;
 int minutosStartBomba = 0; // Minutos de la hora en la que se enciende, que se enciende la bomba (intentar que el inicio + tiempo encendido no sean 60
 int tiempoEncendidoBomba = 5; // minutos
@@ -167,10 +162,10 @@ int getTemperatura(DallasTemperature sensors){
 
 
 void checkEncenderBomba(){
-   for (int elem = 0; elem < sizeof(misHoras); elem++) {
-    if (misHoras[elem] == rtc.now().hour() && minutosStartBomba == rtc.now().minute() && misHoras[elem] != horaEjecutada){
+   for (int elem = 0; elem < sizeof(HOURS_PUMP_ON); elem++) {
+    if (HOURS_PUMP_ON[elem] == rtc.now().hour() && minutosStartBomba == rtc.now().minute() && HOURS_PUMP_ON[elem] != horaEjecutada){
       encenderBomba();
-      horaEjecutada = misHoras[elem];
+      horaEjecutada = HOURS_PUMP_ON[elem];
     }
   }
 }
